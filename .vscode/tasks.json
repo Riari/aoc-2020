@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+        {
+			"label": "Build current file",
+            "type": "shell",
+            "problemMatcher": [
+                "$rustc"
+            ],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+            "command": "cargo",
+            "args": [
+                "build",
+				"--bin",
+				"${fileBasenameNoExtension}"
+            ]
+        }
+	]
+}
