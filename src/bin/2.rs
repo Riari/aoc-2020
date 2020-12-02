@@ -27,10 +27,10 @@ fn values() -> Vec<PasswordModel> {
     return values;
 }
 
-fn part1() {
+fn part1() -> i32 {
     let values = values();
 
-    let mut result: usize = 0;
+    let mut result: i32 = 0;
     for value in values.iter() {
         let occurrences = value.password.matches(value.character).count() as i32;
         
@@ -39,13 +39,13 @@ fn part1() {
         }
     }
 
-    println!("Part 1: {}", result);
+    return result;
 }
 
-fn part2() {
+fn part2() -> i32 {
     let values = values();
 
-    let mut result: usize = 0;
+    let mut result: i32 = 0;
     for value in values.iter() {
         let mut chars = String::from("");
         chars.push(value.password.chars().nth((value.accepted_range.start() - 1) as usize).unwrap());
@@ -56,11 +56,11 @@ fn part2() {
             result = result + 1;
         }
     }
-
-    println!("Part 2: {}", result);
+    
+    return result;
 }
 
 fn main() {
-    part1();
-    part2();
+    println!("Part 1: {}", part1());
+    println!("Part 2: {}", part2());
 }

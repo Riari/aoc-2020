@@ -4,18 +4,22 @@ fn values() -> Vec<i32> {
     return util::file_to_vec("input/1");
 }
 
-fn part1() {
+fn part1() -> i32 {
     let values = values();
+
+    let mut result: i32 = 0;
     for a in &values {
         let b = &(2020 - a);
         if values.contains(b) {
-            println!("{}", a * b);
-            return;
+            result = a * b;
+            break;
         }
     }
+
+    return result;
 }
 
-fn part2() {
+fn part2() -> i32 {
     let mut values = values();
     let mut l: usize;
     let mut r: usize;
@@ -23,6 +27,7 @@ fn part2() {
 
     values.sort();
     
+    let mut result: i32 = 0;
     for (i, a) in values.iter().enumerate() {
         l = i + 1;
         r = values.len() - 1;
@@ -32,9 +37,9 @@ fn part2() {
             let c = values[r];
             let total = a + b + c;
 
-            if total == sum { 
-                println!("{}", a * b * c); 
-                return;
+            if total == sum {
+                result = a * b * c;
+                break;
             } else if total < sum {
                 l = l + 1;
             } else {
@@ -42,9 +47,11 @@ fn part2() {
             }
         } 
     }
+
+    return result;
 }
 
 fn main() {
-    part1();
-    part2();
+    println!("Part 1: {}", part1());
+    println!("Part 2: {}", part2());
 }
