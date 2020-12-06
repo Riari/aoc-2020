@@ -1,42 +1,32 @@
 use std::collections::BTreeSet;
 use util;
 
-fn answers() -> Vec<Vec<BTreeSet<char>>> {
-    return util::file_to_string("input/6")
-        .split("\n\n")
-        .map(|g| {
-            g.split_whitespace()
-                .map(|p| p.chars().collect::<BTreeSet<_>>())
-                .collect()
-        })
-        .collect();
+fn answers() -> Vec<String> {
+    util::file_to_string("input/6").split("\n\n").map(String::from).collect::<Vec<String>>()
 }
 
-fn part1(groups: &Vec<Vec<BTreeSet<char>>>) -> usize {
+fn part1(groups: &Vec<String>) -> usize {
     return groups.iter()
         .map(|g| {
-            let first = g.first().unwrap().clone();
-            g.iter()
-                .skip(1)
-                .fold(first, |a, b| a.union(&b).cloned().collect())
+            g.chars()
+                .filter(|c| c.is_alphabetic())
+                .collect::<BTreeSet<char>>()
                 .len()
         })
-        .collect::<Vec<_>>()
-        .iter()
         .sum()
 }
 
-fn part2(groups: &Vec<Vec<BTreeSet<char>>>) -> usize {
+fn part2(groups: &Vec<String>) -> usize {
     return groups.iter()
-        .map(|g| {
-            let first = g.first().unwrap().clone();
-            g.iter()
-                .skip(1)
-                .fold(first, |a, b| a.intersection(&b).cloned().collect())
-                .len()
-        })
+        .map(|g| g.split_whitespace().collect::<Vec<&str>>())
         .collect::<Vec<_>>()
         .iter()
+        .map(|g| {
+            let first = g.first().unwrap().chars().collect::<BTreeSet<_>>();
+            g.iter().skip(1)
+                .fold(first, |a, b| a.intersection(&b.chars().collect()).cloned().collect())
+                .len()
+        })
         .sum()
 }
 
