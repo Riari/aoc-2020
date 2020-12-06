@@ -2,7 +2,7 @@ use std::collections::BTreeSet;
 use std::iter::FromIterator;
 use util;
 
-fn answers() -> Vec<String> {
+fn groups() -> Vec<String> {
     util::file_to_string("input/6").split("\n\n").map(String::from).collect::<Vec<String>>()
 }
 
@@ -32,8 +32,8 @@ fn part2(groups: &Vec<String>) -> usize {
 }
 
 fn main() {
-    let answers = answers();
+    let groups = groups();
 
-    println!("Part 1: {}", part1(&answers));
-    println!("Part 2: {}", part2(&answers));
+    println!("Part 1: {}", part1(&groups));
+    println!("Part 2: {}", part2(&groups));
 }
