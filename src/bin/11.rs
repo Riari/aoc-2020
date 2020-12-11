@@ -1,4 +1,3 @@
-use std::collections::HashSet;
 use util;
 
 const EMPTY: char = 'L';
@@ -45,6 +44,7 @@ fn count_occupied_seats(plan: &Vec<String>, at_x: usize, at_y: usize, adjacent_o
 }
 
 fn simulate_seating(plan: &Vec<String>, check_adjacent_only: bool, tolerance: usize) -> Vec<String> {
+    let mut changed = false;
     let new_plan: Vec<String> = plan.iter()
         .enumerate()
         .map(|(i, l)| {
@@ -54,6 +54,7 @@ fn simulate_seating(plan: &Vec<String>, check_adjacent_only: bool, tolerance: us
                     match c {
                         EMPTY => {
                             if count_occupied_seats(&plan, j, i, check_adjacent_only) == 0 {
+                                changed = true;
                                 OCCUPIED
                             } else {
                                 c
@@ -61,6 +62,7 @@ fn simulate_seating(plan: &Vec<String>, check_adjacent_only: bool, tolerance: us
                         },
                         OCCUPIED => {
                             if count_occupied_seats(&plan, j, i, check_adjacent_only) >= tolerance {
+                                changed = true;
                                 EMPTY
                             } else {
                                 c
@@ -73,11 +75,8 @@ fn simulate_seating(plan: &Vec<String>, check_adjacent_only: bool, tolerance: us
                 .collect::<String>()
         })
         .collect();
-    
-    let a = new_plan.iter().collect::<HashSet<_>>();
-    let b = plan.iter().collect::<HashSet<_>>();
 
-    if a.difference(&b).count() > 0 {
+    if changed {
         return simulate_seating(&new_plan, check_adjacent_only, tolerance);
     }
 
