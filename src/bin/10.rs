@@ -20,15 +20,15 @@ fn part1(adapters: &Vec<i32>) -> usize {
 
 // https://www.reddit.com/r/rust/comments/ka9nre/advent_of_code_2020_day_10/gf9gtnk/
 fn part2(adapters: &Vec<i32>) -> i64 {
-    adapters.array_windows()  
-        .collect::<Vec<_>>()  
-        .split(|[a,b]| b - a == 3)  
-        .map(|x| match x.len() {  
-            4 => 7,  
-            3 => 4,  
-            2 => 2,  
-            _ => 1  
-        })  
+    adapters.array_windows()
+        .collect::<Vec<_>>()
+        .split(|[a,b]| b - a == 3)
+        .map(|x| match x.len() {
+            4 => 7,
+            3 => 4,
+            2 => 2,
+            _ => 1
+        })
         .product()
 }
 
