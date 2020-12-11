@@ -1,4 +1,4 @@
-use std::collections::BTreeSet;
+use std::collections::HashSet;
 use util;
 
 const EMPTY: char = 'L';
@@ -74,8 +74,8 @@ fn simulate_seating(plan: &Vec<String>, check_adjacent_only: bool, tolerance: us
         })
         .collect();
     
-    let a = new_plan.iter().collect::<BTreeSet<_>>();
-    let b = plan.iter().collect::<BTreeSet<_>>();
+    let a = new_plan.iter().collect::<HashSet<_>>();
+    let b = plan.iter().collect::<HashSet<_>>();
 
     if a.difference(&b).count() > 0 {
         return simulate_seating(&new_plan, check_adjacent_only, tolerance);
