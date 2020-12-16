@@ -90,15 +90,10 @@ fn invalidate_tickets(notes: &Notes) -> HashMap<u16, Ticket> {
     invalid_tickets
 }
 
-fn part1(notes: &Notes) -> u16 {
-    invalidate_tickets(&notes).values()
-        .map(|t| t.iter().sum::<u16>())
-        .sum()
-}
-
 fn find_field_positions(fields: &Fields, tickets: &Vec<&Ticket>) -> HashMap<String, u16> {
-    let mut valid_rules: HashMap<u16, HashSet<String>> = HashMap::new();
+    let mut column_rules: Vec<(u16, HashSet<String>)> = vec![];
     for i in 0..fields.len() {
+        let mut rules_for_column: HashSet<String> = HashSet::new();
         for (field, ranges) in fields.iter() {
             let valid_field_count = tickets.iter()
                 .filter(|t| fits_ranges(&ranges, t[i]))
@@ -106,28 +101,23 @@ fn find_field_positions(fields: &Fields, tickets: &Vec<&Ticket>) -> HashMap<Stri
     
             if valid_field_count == tickets.len() {
                 // Rule is valid for this column
-                valid_rules.entry(i as u16).or_insert_with(HashSet::new).insert(field.to_string());
+                rules_for_column.insert(field.to_string());
             }
         }
+        column_rules.push((i as u16, rules_for_column));
     }
 
-    let mut rules: Vec<(u16, &HashSet<String>)> = vec![];
-    for (column, field_names) in valid_rules.iter() {
-        rules.push((*column, field_names));
-    }
-
-    rules.sort_by(|a, b| a.1.len().cmp(&b.1.len()));
+    column_rules.sort_by(|a, b| a.1.len().cmp(&b.1.len()));
 
     let mut positions: HashMap<String, u16> = HashMap::new();
     let mut dupes: Vec<String> = vec![];
-    for (column, field_names) in rules {
+    for (column, field_names) in column_rules {
         let mut names = field_names.clone();
         for dupe in dupes.iter() {
             names.remove(dupe);
         }
 
         let name = names.iter().nth(0).unwrap();
-
         dupes.push(name.to_string());
         positions.insert(name.to_string(), column);
     }
@@ -135,13 +125,18 @@ fn find_field_positions(fields: &Fields, tickets: &Vec<&Ticket>) -> HashMap<Stri
     positions
 }
 
+fn part1(notes: &Notes) -> u16 {
+    invalidate_tickets(&notes).values()
+        .map(|t| t.iter().sum::<u16>())
+        .sum()
+}
+
 fn part2(notes: &Notes) -> u64 {
     let tickets: Vec<&Ticket> = notes.nearby_tickets.iter()
         .filter(|t| invalidate_ticket(&notes.fields, &t).len() == 0)
         .collect::<Vec<_>>();
 
-    let field_positions = find_field_positions(&notes.fields, &tickets);
-    field_positions.iter()
+    find_field_positions(&notes.fields, &tickets).iter()
         .filter(|(f, _)| f.starts_with("departure"))
         .collect::<HashMap<_, _>>()
         .iter()
