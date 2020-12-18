@@ -8,10 +8,7 @@ fn extract_first_num(expr: &String) -> (usize, usize) {
         }
         end = j;
     }
-    (
-        expr[..=end].chars().collect::<String>().parse::<usize>().unwrap(),
-        end + 1
-    )
+    (expr[..=end].chars().collect::<String>().parse::<usize>().unwrap(), end + 1)
 }
 
 fn op_expr(expr: &String, op: Option<char>) -> String {
@@ -25,7 +22,11 @@ fn op_expr(expr: &String, op: Option<char>) -> String {
             let b = extract_first_num(&expr[i+1..].to_string());
 
             if (op.is_some() && c == op.unwrap()) || op.is_none() {
-                acc = op_pair(acc, b.0, c);
+                match c {
+                    '+' => acc = acc + b.0,
+                    '*' => acc = acc * b.0,
+                    _ => panic!("Unexpected op {}", c),
+                }
             } else {
                 new_expr.push(acc.to_string());
                 acc = b.0;
@@ -45,14 +46,6 @@ fn op_expr(expr: &String, op: Option<char>) -> String {
     new_expr.push(acc.to_string());
 
     new_expr.join("")
-}
-
-fn op_pair(a: usize, b: usize, op: char) -> usize {
-    match op {
-        '+' => a + b,
-        '*' => a * b,
-        _ => panic!("Unexpected op {}", op),
-    }
 }
 
 fn solve(expression: &String, priority_op: Option<char>) -> usize {
