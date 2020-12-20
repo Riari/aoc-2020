@@ -246,12 +246,7 @@ fn part2(tiles: &Vec<Tile>) -> usize {
     let mut monsters = 0;
     for _ in 0..4 {
         for _ in 0..2 {
-            let mut i = 1;
-            loop {
-                if i >= image.len() - 1 {
-                    break;
-                }
-
+            for i in 0..image.len() - 1 {
                 let row_mid = image[i].iter().collect::<String>();
                 let match_mid = SEA_MONSTER_MID_REGEX.find(&row_mid);
 
@@ -270,8 +265,6 @@ fn part2(tiles: &Vec<Tile>) -> usize {
                         }
                     }
                 }
-
-                i += 1;
             }
 
             image.reverse();
