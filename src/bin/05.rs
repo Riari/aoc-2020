@@ -8,7 +8,7 @@ fn address_to_id(address: &String) -> u16 {
 }
 
 fn main() {
-    let seats: Vec<u16> = util::file_to_vec("input/5").iter().map(address_to_id).collect();
+    let seats: Vec<u16> = util::file_to_vec("input/05").iter().map(address_to_id).collect();
     let min = seats.iter().min().unwrap();
     let max = seats.iter().max().unwrap();
 

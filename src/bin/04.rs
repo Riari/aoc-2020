@@ -68,7 +68,7 @@ impl Passport {
 }
 
 fn passports() -> Vec<Passport> {
-    return util::file_to_string("input/4")
+    return util::file_to_string("input/04")
         .split("\n\n")
         .map(|a| {
             a.split_whitespace()

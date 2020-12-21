@@ -113,7 +113,7 @@ fn part2(program: &Program) -> i32 {
 }
 
 fn main() {
-    let input = util::file_to_string("input/8");
+    let input = util::file_to_string("input/08");
 
     println!("Part 1: {}", part1(&mut Program::new(&input)));
     println!("Part 2: {}", part2(&Program::new(&input)));

@@ -8,7 +8,7 @@ struct PasswordModel {
 }
 
 fn values() -> Vec<PasswordModel> {
-    let rows: Vec<String> = util::file_to_vec("input/2");
+    let rows: Vec<String> = util::file_to_vec("input/02");
     let mut values = Vec::<PasswordModel>::new();
 
     for row in rows.iter() {

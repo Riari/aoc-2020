@@ -8,7 +8,7 @@ type ContentsMap = HashMap<String, usize>;
 type BagMap = HashMap<String, ContentsMap>;
 
 fn bags() -> BagMap {
-    let input = util::file_to_string("input/7");
+    let input = util::file_to_string("input/07");
     let re = Regex::new(r"(?P<count>\d+) (?P<color>.+?) bags?").unwrap();
 
     let mut map: BagMap = HashMap::new();

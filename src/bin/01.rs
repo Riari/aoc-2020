@@ -1,7 +1,7 @@
 use util;
 
 fn values() -> Vec<i32> {
-    return util::file_to_vec("input/1");
+    return util::file_to_vec("input/01");
 }
 
 fn part1() -> i32 {

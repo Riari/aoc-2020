@@ -3,7 +3,7 @@ use std::iter::FromIterator;
 use util;
 
 fn groups() -> Vec<String> {
-    util::file_to_string("input/6").split("\n\n").map(String::from).collect()
+    util::file_to_string("input/06").split("\n\n").map(String::from).collect()
 }
 
 fn part1(groups: &Vec<String>) -> usize {

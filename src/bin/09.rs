@@ -64,7 +64,7 @@ fn find_vec_summing_to(input: &Vec<usize>, row: &Row) -> Option<Vec<usize>> {
 }
 
 fn main() {
-    let input: Vec<usize> = util::file_to_vec("input/9");
+    let input: Vec<usize> = util::file_to_vec("input/09");
     let first_invalid_row = find_first_invalid_row(&input).unwrap();
     let vec_summing_to = find_vec_summing_to(&input, &first_invalid_row).unwrap();
     let final_sum = vec_summing_to.iter().min().unwrap() + vec_summing_to.iter().max().unwrap();
