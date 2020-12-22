@@ -31,12 +31,11 @@ fn play(p1: &mut Deck, p2: &mut Deck, recursive: bool) -> usize {
         let c1 = p1.pop_front().unwrap();
         let c2 = p2.pop_front().unwrap();
 
-        let p1_wins: bool;
-        if recursive && c1 <= p1.len() && c2 <= p2.len() {
-            p1_wins = play(&mut p1.iter().take(c1).copied().collect(), &mut p2.iter().take(c2).copied().collect(), recursive) == 1;
+        let p1_wins = if recursive && c1 <= p1.len() && c2 <= p2.len() {
+            play(&mut p1.iter().take(c1).copied().collect(), &mut p2.iter().take(c2).copied().collect(), recursive) == 1
         } else {
-            p1_wins = c1 > c2;
-        }
+            c1 > c2
+        };
 
         if p1_wins {
             p1.push_back(c1);
