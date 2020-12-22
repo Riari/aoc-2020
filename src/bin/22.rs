@@ -20,8 +20,8 @@ fn get_score(deck: &Deck) -> usize {
         .sum()
 }
 
-fn play(p1: &mut VecDeque<usize>, p2: &mut VecDeque<usize>, recursive: bool) -> usize {
-    let mut seen: HashSet<(VecDeque<_>, VecDeque<_>)> = HashSet::new();
+fn play(p1: &mut Deck, p2: &mut Deck, recursive: bool) -> usize {
+    let mut seen: HashSet<(Deck, Deck)> = HashSet::new();
 
     while !p1.is_empty() && !p2.is_empty() {
         if recursive && !seen.insert((p1.clone(), p2.clone())) {
