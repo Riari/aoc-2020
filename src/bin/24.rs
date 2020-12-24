@@ -1,5 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use lazy_static::lazy_static;
+use regex::Regex;
 use util;
 
 type Pos = [i8;2];
@@ -17,51 +18,6 @@ lazy_static! {
     };
 }
 
-fn tiles() -> Vec<Vec<Pos>> {
-    let input = util::file_to_string("input/24");
-
-    input.lines()
-        .map(|l| {
-            let mut i = 0;
-            let mut tile: Vec<Pos> = vec![];
-
-            loop {
-                let c = l.chars().nth(i).unwrap();
-
-                match c {
-                    'n' => {
-                        match l.chars().nth(i + 1).unwrap() {
-                            'w' => tile.push(*DIRECTIONS.get("nw").unwrap()),
-                            'e' => tile.push(*DIRECTIONS.get("ne").unwrap()),
-                            _ => unreachable!()
-                        }
-                        i += 1;
-                    }
-                    'e' => tile.push(*DIRECTIONS.get("e").unwrap()),
-                    's' => {
-                        match l.chars().nth(i + 1).unwrap() {
-                            'e' => tile.push(*DIRECTIONS.get("se").unwrap()),
-                            'w' => tile.push(*DIRECTIONS.get("sw").unwrap()),
-                            _ => unreachable!()
-                        }
-                        i += 1;
-                    }
-                    'w' => tile.push(*DIRECTIONS.get("w").unwrap()),
-                    _ => unreachable!()
-                }
-
-                i += 1;
-
-                if i >= l.len() {
-                    break;
-                }
-            }
-
-            tile
-        })
-        .collect::<Vec<Vec<_>>>()
-}
-
 fn add(a: Pos, b: Pos) -> Pos {
     let mut z: Pos = [0, 0];
     for (i, (aval, bval)) in a.iter().zip(&b).enumerate() {
@@ -70,14 +26,17 @@ fn add(a: Pos, b: Pos) -> Pos {
     z
 }
 
-fn part1(tiles: &Vec<Vec<Pos>>) -> HashSet<Pos> {
-    let mut black_tiles: HashSet<Pos> = HashSet::new();
+fn black_tiles() -> HashSet<Pos> {
+    lazy_static! {
+        static ref DIR_REGEX: Regex = Regex::new(r"nw|ne|se|sw|e|w").unwrap();
+    }
 
-    for moves in tiles.iter() {
+    let mut black_tiles: HashSet<Pos> = HashSet::new();
+    for line in util::file_to_string("input/24").lines() {
         let mut pos: Pos = [0, 0];
 
-        for mv in moves.iter() {
-            pos = add(pos, *mv);
+        for caps in DIR_REGEX.captures_iter(line) {
+            pos = add(pos, *DIRECTIONS.get(caps.get(0).unwrap().as_str()).unwrap());
         }
 
         if black_tiles.contains(&pos) {
@@ -136,9 +95,8 @@ fn part2(black_tiles: &mut HashSet<Pos>) -> usize {
 }
 
 fn main() {
-    let tiles = tiles();
+    let mut black_tiles = black_tiles();
 
-    let mut black_tiles = part1(&tiles);
     println!("Part 1: {}", black_tiles.len());
     println!("Part 2: {}", part2(&mut black_tiles));
 }
