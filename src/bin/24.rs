@@ -61,8 +61,7 @@ fn enumerate_neighbours(tile: &Pos, black_tiles: &HashSet<Pos>) -> HashMap<Pos, 
 
 fn part2(black_tiles: &mut HashSet<Pos>) -> usize {
     for _ in 0..100 {
-        let mut add: HashSet<Pos> = HashSet::new();
-        let mut remove: HashSet<Pos> = HashSet::new();
+        let mut new: HashSet<Pos> = HashSet::new();
         for tile in black_tiles.iter() {
             let neighbours = enumerate_neighbours(&tile, &black_tiles);
 
@@ -72,23 +71,17 @@ fn part2(black_tiles: &mut HashSet<Pos>) -> usize {
                     black_neighbours += 1;
                 } else {
                     if enumerate_neighbours(&neighbour, &black_tiles).iter().filter(|(_, &b)| b).count() == 2 {
-                        add.insert(*neighbour);
+                        new.insert(*neighbour);
                     }
                 }
             }
 
-            if black_neighbours == 0 || black_neighbours > 2 {
-                remove.insert(*tile);
+            if (1..=2).contains(&black_neighbours) {
+                new.insert(*tile);
             }
         }
-
-        for pos in add.iter() {
-            black_tiles.insert(*pos);
-        }
-
-        for pos in remove.iter() {
-            black_tiles.remove(pos);
-        }
+        
+        *black_tiles = new;
     }
 
     black_tiles.len()
